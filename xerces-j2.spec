@@ -37,7 +37,7 @@
 
 Name:           xerces-j2
 Version:        2.7.1
-Release:        12.5%{?dist}
+Release:        12.6%{?dist}
 Epoch:          0
 Summary:        Java XML parser
 License:        ASL 2.0
@@ -50,6 +50,7 @@ Source3:        XJavac.java
 Source4:        %{name}-MANIFEST.MF
 Patch0:         %{name}-build.patch
 Patch1:         %{name}-libgcj.patch
+Patch2:         %{name}-CVE-2009-2625.patch
 Obsoletes:      xerces-j2-dom3 < %{epoch}:%{version}-%{release}
 Provides:       jaxp_parser_impl = 1.3
 Provides:       xerces-j2-dom3 = %{epoch}:%{version}-%{release}
@@ -160,6 +161,8 @@ Additional utility scripts for %{name}.
 %setup -q -n xerces-%{cvs_version}
 %patch0 -b .build
 
+%patch2 -p0
+
 mkdir -p tools/org/apache/xerces/util
 cp -a %{SOURCE3} tools/org/apache/xerces/util
 %patch1 -p0 -b .libgcj
@@ -198,8 +201,8 @@ ant \
         -Dbuild.compiler=modern \
         -Djar.apis=xml-commons-apis.jar \
         -Djar.resolver=xml-commons-resolver.jar \
-#        -Ddoc.generator.package=./tools/xml-stylebook.jar \
-        clean jars javadocs docs sampjar
+         clean jars javadocs docs
+#        clean jars javadocs docs sampjar
 %else
 ant \
         -Dbuild.compiler=modern \
@@ -374,6 +377,10 @@ fi
 
 
 %changelog
+* Mon Apr 18 2011 Chris Aniszczyk <zx@redhat.com> - 0:2.7.1-12.6
+- Add xerces-j2-CVE-2009-2625.patch
+- Resolves: rhbz#690931 CVE-2009-2625
+
 * Wed Jan 20 2010 Andrew Overholt <overholt@redhat.com> - 0:2.7.1-12.5
 - Version jaxp_parser_impl Provides.
 
