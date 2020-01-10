@@ -37,7 +37,7 @@
 
 Name:           xerces-j2
 Version:        2.7.1
-Release:        12.6%{?dist}
+Release:        12.7%{?dist}
 Epoch:          0
 Summary:        Java XML parser
 License:        ASL 2.0
@@ -51,6 +51,7 @@ Source4:        %{name}-MANIFEST.MF
 Patch0:         %{name}-build.patch
 Patch1:         %{name}-libgcj.patch
 Patch2:         %{name}-CVE-2009-2625.patch
+Patch3:         %{name}-CVE-2013-4002.patch
 Obsoletes:      xerces-j2-dom3 < %{epoch}:%{version}-%{release}
 Provides:       jaxp_parser_impl = 1.3
 Provides:       xerces-j2-dom3 = %{epoch}:%{version}-%{release}
@@ -162,6 +163,7 @@ Additional utility scripts for %{name}.
 %patch0 -b .build
 
 %patch2 -p0
+%patch3 -p0
 
 mkdir -p tools/org/apache/xerces/util
 cp -a %{SOURCE3} tools/org/apache/xerces/util
@@ -377,9 +379,13 @@ fi
 
 
 %changelog
+* Thu Sep 11 2014 Mikolaj Izdebski <mizdebsk@redhat.com> - 0:2.7.1-12.7
+- Fix XML parsing bug (JAXP, 8017298)
+- Resolves: CVE-2013-4002
+
 * Mon Apr 18 2011 Chris Aniszczyk <zx@redhat.com> - 0:2.7.1-12.6
 - Add xerces-j2-CVE-2009-2625.patch
-- Resolves: rhbz#690931 CVE-2009-2625
+- Resolves: rhbz#690932 CVE-2009-2625
 
 * Wed Jan 20 2010 Andrew Overholt <overholt@redhat.com> - 0:2.7.1-12.5
 - Version jaxp_parser_impl Provides.
