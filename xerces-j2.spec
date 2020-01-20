@@ -4,7 +4,7 @@
 
 Name:          xerces-j2
 Version:       2.11.0
-Release:       16%{?dist}
+Release:       17%{?dist}
 Summary:       Java XML parser
 Group:         Development/Libraries
 License:       ASL 2.0
@@ -30,6 +30,10 @@ Patch0:        %{name}-build.patch
 
 # Patch the manifest so that it includes OSGi stuff
 Patch1:        %{name}-manifest.patch
+
+# Fix XML parsing bug (JAXP, 8017298)
+# Backported from upstream commit http://svn.apache.org/viewvc?view=revision&revision=1499506
+Patch2:        %{name}-CVE-2013-4002.patch
 
 BuildArch:     noarch
 
@@ -113,6 +117,7 @@ Requires:       %{name} = %{version}-%{release}
 %setup -q -n xerces-%{cvs_version}
 %patch0 -p0 -b .orig
 %patch1 -p0 -b .orig
+%patch2 -p0 -b .orig
 
 # Copy the custom ant tasks into place
 mkdir -p tools/org/apache/xerces/util
@@ -216,6 +221,10 @@ update-alternatives --install %{_javadir}/jaxp_parser_impl.jar \
 %{_datadir}/%{name}
 
 %changelog
+* Thu Sep 11 2014 Mikolaj Izdebski <mizdebsk@redhat.com> - 2.11.0-17
+- Fix XML parsing bug (JAXP, 8017298)
+- Resolves: CVE-2013-4002
+
 * Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 2.11.0-16
 - Mass rebuild 2013-12-27
 
